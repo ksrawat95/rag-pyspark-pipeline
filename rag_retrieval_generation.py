@@ -12,10 +12,9 @@ from pyspark.sql.types import FloatType
 # Ensure local compatibility
 spark = (SparkSession.builder
     .appName("RAG-Retrieval-Generation")
-    .config("spark.sql.execution.arrow.pyspark.enabled", "true")
     .getOrCreate())
 
-print("Spark Session Active. Ready for Retrieval & Search.")
+print("Spark Session Active. Ready for Retrieval & Search. (Arrow Execution is enabled by default)")
 
 # COMMAND ----------
 # DBTITLE 1,Cell 3: User Query Vectorization (AI Layer)

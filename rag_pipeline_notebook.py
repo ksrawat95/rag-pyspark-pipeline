@@ -14,11 +14,10 @@ from pyspark.sql.types import StructType, StructField, StringType, IntegerType, 
 # Ensure local testing compatibility if run outside a Databricks environment
 spark = (SparkSession.builder
     .appName("RAG-PySpark-Pipeline")
-    .config("spark.sql.execution.arrow.pyspark.enabled", "true")
     .config("spark.sql.execution.arrow.maxRecordsPerBatch", "2048")
     .getOrCreate())
 
-print(f"Spark Session Active. Arrow Execution Enabled: {spark.conf.get('spark.sql.execution.arrow.pyspark.enabled')}")
+print("Spark Session Active. (Arrow Execution is enabled by default in Databricks ML Runtimes)")
 
 # COMMAND ----------
 # DBTITLE 1,Cell 3: Ingestion Layer (Raw Landing Zone / Bronze Table)
