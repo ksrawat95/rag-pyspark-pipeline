@@ -12,11 +12,11 @@ from pyspark.sql.functions import col, udf, explode, pandas_udf
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType, ArrayType, FloatType
 
 # Ensure local testing compatibility if run outside a Databricks environment
-spark = SparkSession.builder \
-    .appName("RAG-PySpark-Pipeline") \
-    .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
-    .config("spark.sql.execution.arrow.maxRecordsPerBatch", "2048") \
-    .getOrCreate()
+spark = (SparkSession.builder
+    .appName("RAG-PySpark-Pipeline")
+    .config("spark.sql.execution.arrow.pyspark.enabled", "true")
+    .config("spark.sql.execution.arrow.maxRecordsPerBatch", "2048")
+    .getOrCreate())
 
 print(f"Spark Session Active. Arrow Execution Enabled: {spark.conf.get('spark.sql.execution.arrow.pyspark.enabled')}")
 
@@ -117,8 +117,8 @@ chunk_struct_schema = ArrayType(StructType([
 chunking_udf = udf(lambda t: chunk_unstructured_text(t), chunk_struct_schema)
 
 # Apply chunking and explode the array column to transform documents into row-level semantic chunks
-silver_df = bronze_df.withColumn("chunks", chunking_udf(col("text"))) \
-    .select("doc_id", "title", "category", explode("chunks").alias("chunk")) \
+silver_df = (bronze_df.withColumn("chunks", chunking_udf(col("text")))
+    .select("doc_id", "title", "category", explode("chunks").alias("chunk"))
     .select(
         "doc_id",
         "title",
@@ -126,7 +126,7 @@ silver_df = bronze_df.withColumn("chunks", chunking_udf(col("text"))) \
         col("chunk.chunk_index").alias("chunk_index"),
         col("chunk.chunk_text").alias("chunk_text"),
         col("chunk.char_length").alias("char_length")
-    )
+    ))
 
 print("Silver Chunked DataFrame created. Total Chunks: ", silver_df.count())
 silver_df.show(10, truncate=50)
@@ -196,11 +196,11 @@ gold_df = silver_df.withColumn("vector_embeddings", generate_batch_embeddings_ud
 target_table_name = "default.rag_vector_store"
 
 # Overwrite mode allows notebook re-runs without schema conflict errors
-gold_df.write \
-    .format("delta") \
-    .mode("overwrite") \
-    .option("overwriteSchema", "true") \
-    .saveAsTable(target_table_name)
+(gold_df.write
+    .format("delta")
+    .mode("overwrite")
+    .option("overwriteSchema", "true")
+    .saveAsTable(target_table_name))
 
 print(f"Gold Vector Store Table '{target_table_name}' successfully persisted to Delta Lake.")
 

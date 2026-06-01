@@ -10,10 +10,10 @@ from pyspark.sql.functions import col, udf
 from pyspark.sql.types import FloatType
 
 # Ensure local compatibility
-spark = SparkSession.builder \
-    .appName("RAG-Retrieval-Generation") \
-    .config("spark.sql.execution.arrow.pyspark.enabled", "true") \
-    .getOrCreate()
+spark = (SparkSession.builder
+    .appName("RAG-Retrieval-Generation")
+    .config("spark.sql.execution.arrow.pyspark.enabled", "true")
+    .getOrCreate())
 
 print("Spark Session Active. Ready for Retrieval & Search.")
 
