@@ -1,0 +1,74 @@
+# ==========================================
+# Byte-compiled / optimized / DLL files
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==========================================
+# Environments and Secrets
+# ==========================================
+.env
+.env.*
+.venv
+venv/
+ENV/
+env/
+*.env
+*.pem
+*.key
+*.cert
+
+# ==========================================
+# Databricks & Jupyter Specific
+# ==========================================
+.ipynb_checkpoints/
+.databricks/
+.databricks-connect/
+*.dbfs/
+.trash/
+dbfs_root/
+
+# ==========================================
+# Virtual environments, pip & package caches
+# ==========================================
+.python-version
+pip-log.txt
+pip-delete-this-directory.txt
+.eggs/
+.installed.cfg
+*.egg-info/
+*.egg
+MANIFEST
+
+# ==========================================
+# Unit testing / coverage reports
+# ==========================================
+htmlcov/
+.tox/
+.nosetestsrc
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.tox/
+
+# ==========================================
+# IDE and System Files
+# ==========================================
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
