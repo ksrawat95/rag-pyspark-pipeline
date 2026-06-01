@@ -23,7 +23,7 @@ user_query = "How does Delta Lake guarantee ACID transaction compliance?"
 
 # Load the same embedding model used in the ingestion pipeline
 from sentence_transformers import SentenceTransformer
-embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", cache_folder="/tmp/hf_cache")
 
 # Generate the 384-dimensional dense query vector
 query_vector = embedding_model.encode([user_query])[0]

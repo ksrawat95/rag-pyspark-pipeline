@@ -162,7 +162,7 @@ def get_sentence_transformer_model():
         from sentence_transformers import SentenceTransformer
         # Load the lightweight MiniLM model (384-dimensional dense vectors)
         # Highly efficient for Single-Node clusters (Databricks Community Edition)
-        _sentence_transformer_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+        _sentence_transformer_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", cache_folder="/tmp/hf_cache")
     return _sentence_transformer_model
 
 @pandas_udf(ArrayType(FloatType()))
