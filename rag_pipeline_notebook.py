@@ -19,6 +19,19 @@ spark = (SparkSession.builder
 
 print("Spark Session Active. (Arrow Execution is enabled by default in Databricks ML Runtimes)")
 
+# Pre-download and save the model weights to the shared Databricks Workspace folder.
+# This runs on the DRIVER node, which has internet access. By saving the model 
+# locally, executor workers can load it in parallel without requiring any internet access!
+local_model_path = "./all-MiniLM-L6-v2-local"
+if not os.path.exists(local_model_path):
+    print("Downloading and caching model weights on Driver node...")
+    from sentence_transformers import SentenceTransformer
+    driver_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", cache_folder="/tmp/hf_cache")
+    driver_model.save(local_model_path)
+    print(f"Model successfully saved to shared workspace: {local_model_path}")
+else:
+    print(f"Model weights already cached in shared workspace: {local_model_path}")
+
 # COMMAND ----------
 # DBTITLE 1,Cell 3: Ingestion Layer (Raw Landing Zone / Bronze Table)
 # Create a comprehensive mock dataset simulating an unstructured raw Data Lake landing zone.
@@ -160,9 +173,8 @@ def get_sentence_transformer_model():
     global _sentence_transformer_model
     if _sentence_transformer_model is None:
         from sentence_transformers import SentenceTransformer
-        # Load the lightweight MiniLM model (384-dimensional dense vectors)
-        # Highly efficient for Single-Node clusters (Databricks Community Edition)
-        _sentence_transformer_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", cache_folder="/tmp/hf_cache")
+        # Load the pre-saved model locally (executors read from shared workspace, no internet required!)
+        _sentence_transformer_model = SentenceTransformer("./all-MiniLM-L6-v2-local")
     return _sentence_transformer_model
 
 @pandas_udf(ArrayType(FloatType()))

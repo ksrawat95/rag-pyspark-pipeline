@@ -21,9 +21,9 @@ print("Spark Session Active. Ready for Retrieval & Search. (Arrow Execution is e
 # Input search query representing the user's information need
 user_query = "How does Delta Lake guarantee ACID transaction compliance?"
 
-# Load the same embedding model used in the ingestion pipeline
+# Load the pre-saved model locally from the shared Workspace folder (no internet required!)
 from sentence_transformers import SentenceTransformer
-embedding_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2", cache_folder="/tmp/hf_cache")
+embedding_model = SentenceTransformer("./all-MiniLM-L6-v2-local")
 
 # Generate the 384-dimensional dense query vector
 query_vector = embedding_model.encode([user_query])[0]
